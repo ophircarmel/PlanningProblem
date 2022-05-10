@@ -40,6 +40,7 @@ class PlanningProblem:
 
     def get_start_state(self):
         "*** YOUR CODE HERE ***"
+        # returning the initial state
         return self.initialState
 
     def is_goal_state(self, state):
@@ -48,6 +49,7 @@ class PlanningProblem:
         """
         "*** YOUR CODE HERE ***"
 
+        # checing if the goal is not not in the proposition layer
         return not self.goal_state_not_in_prop_layer(state)
 
     def get_successors(self, state):
@@ -67,17 +69,15 @@ class PlanningProblem:
         "*** YOUR CODE HERE ***"
         succs = []
         for a in self.actions:
+            # checking if all preconditions are satisfiable annd if so - adding the successor
             if a.all_preconds_in_list(state):
                 add = a.get_add()
                 delete = a.get_delete()
                 succs.append((state.union(add).difference(delete), a, 1))
         return succs
 
-
-
-
     @staticmethod
-    def get_cost_of_actions( actions):
+    def get_cost_of_actions(actions):
         return len(actions)
 
     def goal_state_not_in_prop_layer(self, propositions):
