@@ -138,7 +138,7 @@ def max_level(state, planning_problem: PlanningProblem):
             return level
 
         if len(graph[level].get_proposition_layer().get_propositions()) == \
-                len(graph[level - 1].get_proposition_layer().get_propositions()) and:
+                len(graph[level - 1].get_proposition_layer().get_propositions()):
             return float('inf')
 
 
