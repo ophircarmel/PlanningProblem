@@ -42,12 +42,15 @@ class PlanningProblem:
 
     def get_start_state(self):
         "*** YOUR CODE HERE ***"
+        return self.initialState
 
     def is_goal_state(self, state):
         """
         Hint: you might want to take a look at goal_state_not_in_prop_payer function
         """
         "*** YOUR CODE HERE ***"
+
+        return self.goal_state_not_in_prop_layer(state)
 
     def get_successors(self, state):
         """
@@ -64,6 +67,16 @@ class PlanningProblem:
         """
         self.expanded += 1
         "*** YOUR CODE HERE ***"
+        succs = []
+        for a in self.actions:
+            if a.all_preconds_in_list(state):
+                add = a.get_add()
+                delete = a.get_delete()
+                succs.append(state.union(add).difference(delete), a, 1)
+        return succs
+
+
+
 
     @staticmethod
     def get_cost_of_actions( actions):
@@ -106,6 +119,11 @@ def max_level(state, planning_problem):
     pg_init.set_proposition_layer(prop_layer_init)   #update the new plan graph level with the the proposition layer
     """
     "*** YOUR CODE HERE ***"
+    prop_layer_init = PropositionLayer()
+    for prop in state:
+        prop_layer_init.add_proposition(prop)
+    pg_init = PlanGraphLevel()
+    pg_init.set_proposition_layer(prop_layer_init)
 
 
 def level_sum(state, planning_problem):
