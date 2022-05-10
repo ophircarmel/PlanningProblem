@@ -76,6 +76,7 @@ class PlanGraphLevel(object):
         Note that an action is *not* mutex with itself
         """
         current_layer_actions = self.action_layer.get_actions()
+        self.action_layer.mutexActions = set()  # resetting the mutex actions list
         for act1 in current_layer_actions:
             for act2 in current_layer_actions:
                 if mutex_actions(act1, act2, previous_layer_mutex_proposition):
@@ -96,7 +97,23 @@ class PlanGraphLevel(object):
 
         """
         current_layer_actions = self.action_layer.get_actions()
-        "*** YOUR CODE HERE ***"
+        producers = dict()
+
+        # finding all the producers of each proposition
+        for prop in PlanGraphLevel.props:
+            producers[prop.get_name()] = set()
+        for action in current_layer_actions:
+            for prop in action.get_add():
+                producers[prop].add(action)
+
+        # if a proposition has at least one producer - we add it to the proposition layer
+        self.proposition_layer = PropositionLayer()
+        for prop in PlanGraphLevel.props:
+            if len(producers[prop]) != 0:
+                # creating a new proposition and adding the producers list
+                new_curr_prop = Proposition(prop.get_name())
+                new_curr_prop.set_producers(producers[prop])
+                self.proposition_layer.add_proposition(new_curr_prop)
 
     def update_mutex_proposition(self):
         """
@@ -109,7 +126,11 @@ class PlanGraphLevel(object):
         """
         current_layer_propositions = self.proposition_layer.get_propositions()
         current_layer_mutex_actions = self.action_layer.get_mutex_actions()
-        "*** YOUR CODE HERE ***"
+        self.proposition_layer.mutexPropositions = set()  # resetting the mutex list
+        for p1 in current_layer_propositions:
+            for p2 in current_layer_propositions:
+                if mutex_propositions(p1, p2, current_layer_mutex_actions):
+                    self.proposition_layer.add_mutex_prop(p1, p2)
 
     def expand(self, previous_layer):
         """
