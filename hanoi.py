@@ -131,7 +131,7 @@ def create_domain_file(domain_file_name, n_, m_):
                     domain_file.write(move_i_null_h_k_l(disk1, disk2, peg1, peg2))
                     domain_file.write(move_i_j_null_k_l(disk1, disk2, peg1, peg2))
                     for disk3 in disks:
-                        if not is_first_smaller(disk1, disk3):
+                        if not is_first_smaller(disk1, disk3) or disk3 == disk2:
                             continue
                         domain_file.write(move_i_j_h_k_l(disk1, disk2, disk3, peg1, peg2))
 
