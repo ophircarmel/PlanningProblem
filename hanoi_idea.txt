@@ -1,0 +1,54 @@
+empty_p_k # no disks on peg k
+top_i # no disks on disk i
+righton_i_k # disk i is on peg k with nothing under
+on_i_k # disk i is on peg k
+ontop_i_j # disk i is on top of disk j
+
+move_i_null_h_k_l
+move_i_j_null_k_l
+move_i_null_null_k_l
+
+
+
+move_i_j_h_k_l
+pre: top_i, on_i_k, on_j_k, ontop_i_j, top_h, on_h_l
+add: top_j, on_i_l, ontop_i_h
+delete: on_i_k, ontop_i_j, top_h
+
+move_i_null_h_k_l
+pre: top_i, righton_i_k, top_h, on_h_l
+add: empty_k, on_i_l, ontop_i_h
+delete: right_on_i_k, top_h
+
+move_i_j_null_k_l
+pre: top_i, on_i_k, on_j_k, ontop_i_j, empty_l
+add: top_j, righton_i_l
+delete: on_i_k, ontop_i_j, empty_l
+
+move_i_null_null_k_l
+pre: top_i, righton_i_k, empty_l
+add: empty_k, righton_i_h
+delete: righton_i_k, empty_l
+
+
+
+
+Pickup_i_j_k
+pre: non_up, top_i, on_i_k, on_j_k, ontop_i_j
+add: up_i, top_j
+delete: non_up, top_i, on_i_k, ontop_i_j
+
+Putdown_i_j_k
+pre: up_i, top_j, on_j_k
+add: non_up top_i, on_i_k, ontop_i_j
+delete: up_i, top_j
+
+Pickup_i_-_k
+pre: non_up, top_i, righton_i_k
+add: up_i, empty_p_k
+delete: non_up, top_i, righton_i_k
+
+Putdown_i_-_k
+pre: up_i, empty_p_k
+add: non_up, top_i, righton_i_k
+delete: up_i, empty_p_k
