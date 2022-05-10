@@ -1,5 +1,3 @@
-from util import Pair
-import copy
 from proposition_layer import PropositionLayer
 from plan_graph_level import PlanGraphLevel
 from pgparser import PgParser
@@ -11,8 +9,8 @@ try:
 
 except:
     try:
-        from CPF.search import SearchProblem
-        from CPF.search import a_star_search
+        from search import SearchProblem
+        from search import a_star_search
     except:
         from CPF.search_win_34 import SearchProblem
         from CPF.search_win_34 import a_star_search
@@ -50,7 +48,7 @@ class PlanningProblem:
         """
         "*** YOUR CODE HERE ***"
 
-        return self.goal_state_not_in_prop_layer(state)
+        return not self.goal_state_not_in_prop_layer(state)
 
     def get_successors(self, state):
         """
@@ -72,7 +70,7 @@ class PlanningProblem:
             if a.all_preconds_in_list(state):
                 add = a.get_add()
                 delete = a.get_delete()
-                succs.append(state.union(add).difference(delete), a, 1)
+                succs.append((state.union(add).difference(delete), a, 1))
         return succs
 
 

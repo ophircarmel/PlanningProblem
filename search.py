@@ -2,7 +2,7 @@
 In search.py, you will implement generic search algorithms
 """
 
-import util
+import CPF.util as util
 
 
 class SearchProblem:
