@@ -13,6 +13,7 @@ class PropositionLayer(object):
         """
         self.propositions = set()
         # set of all the propositions in the layer
+        # set of all the propositions in the layer
         self.mutexPropositions = set()
         # set of pairs of propositions that are mutex in the layer
 

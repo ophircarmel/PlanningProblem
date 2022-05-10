@@ -1,9 +1,8 @@
-from util import Pair
-import copy
 from proposition_layer import PropositionLayer
 from plan_graph_level import PlanGraphLevel
 from pgparser import PgParser
 from action import Action
+from graph_plan import GraphPlan
 
 try:
     from search import SearchProblem
@@ -11,8 +10,8 @@ try:
 
 except:
     try:
-        from CPF.search import SearchProblem
-        from CPF.search import a_star_search
+        from search import SearchProblem
+        from search import a_star_search
     except:
         from CPF.search_win_34 import SearchProblem
         from CPF.search_win_34 import a_star_search
@@ -42,6 +41,7 @@ class PlanningProblem:
 
     def get_start_state(self):
         "*** YOUR CODE HERE ***"
+        # returning the initial state
         return self.initialState
 
     def is_goal_state(self, state):
@@ -50,7 +50,8 @@ class PlanningProblem:
         """
         "*** YOUR CODE HERE ***"
 
-        return self.goal_state_not_in_prop_layer(state)
+        # checing if the goal is not not in the proposition layer
+        return not self.goal_state_not_in_prop_layer(state)
 
     def get_successors(self, state):
         """
@@ -69,13 +70,12 @@ class PlanningProblem:
         "*** YOUR CODE HERE ***"
         succs = []
         for a in self.actions:
+            # checking if all preconditions are satisfiable annd if so - adding the successor
             if a.all_preconds_in_list(state):
                 add = a.get_add()
                 delete = a.get_delete()
-                succs.append(state.union(add).difference(delete), a, 1)
+                succs.append((state.union(add).difference(delete), a, 1))
         return succs
-
-
 
     @staticmethod
     def get_cost_of_actions(actions):
@@ -106,7 +106,7 @@ class PlanningProblem:
             self.actions.append(act)
 
 
-def max_level(state, planning_problem):
+def max_level(state, planning_problem: PlanningProblem):
     """
     The heuristic value is the number of layers required to expand all goal propositions.
     If the goal is not reachable from the state your heuristic should return float('inf')
@@ -123,6 +123,26 @@ def max_level(state, planning_problem):
         prop_layer_init.add_proposition(prop)
     pg_init = PlanGraphLevel()
     pg_init.set_proposition_layer(prop_layer_init)
+
+    graph = list()
+    graph.append(pg_init)
+    level = 0
+
+    while(True):
+        level += 1
+        pg_next = PlanGraphLevel()
+        pg_next.expand_without_mutex(graph[level-1])
+        graph.append(pg_next)
+
+        if all(x in pg_next.get_proposition_layer() for x in planning_problem.goal):
+            return level
+
+        if len(graph[level].get_proposition_layer().get_propositions()) == \
+                len(graph[level - 1].get_proposition_layer().get_propositions()) and:
+            return float('inf')
+
+
+
 
 
 def level_sum(state, planning_problem):
