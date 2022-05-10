@@ -134,11 +134,11 @@ def max_level(state, planning_problem: PlanningProblem):
         pg_next.expand_without_mutex(graph[level-1])
         graph.append(pg_next)
 
-        if all(x in pg_next.get_proposition_layer() for x in planning_problem.goal):
+        if all([(x in pg_next.get_proposition_layer().get_propositions()) for x in planning_problem.goal]):
             return level
 
         if len(graph[level].get_proposition_layer().get_propositions()) == \
-                len(graph[level - 1].get_proposition_layer().get_propositions()) and:
+                len(graph[level - 1].get_proposition_layer().get_propositions()):
             return float('inf')
 
 
