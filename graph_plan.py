@@ -233,15 +233,20 @@ def independent_pair(a1, a2):
     a1.is_pos_effect(p) returns true is p is in a1.get_add()
     a1.is_neg_effect(p) returns true is p is in a1.get_delete()
     """
+
+    # checking if the preconditions of action 1 are deleted by action 2
     for precondition in a1.get_pre():
         if a2.is_neg_effect(precondition):
             return False
+    # checking if the preconditions of action 2 are deleted by action 1
     for precondition in a2.get_pre():
         if a1.is_neg_effect(precondition):
             return False
+    # checking if the effects of action 1 are deleted by action 2
     for effect in a1.get_add():
         if a2.is_neg_effect(effect):
             return False
+    # checking if the effects of action 2 are deleted by action 1
     for effect in a2.get_add():
         if a1.is_neg_effect(effect):
             return False
