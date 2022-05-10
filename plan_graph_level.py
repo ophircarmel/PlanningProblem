@@ -160,4 +160,8 @@ def mutex_propositions(prop1, prop2, mutex_actions_list):
     You might want to use this function:
     prop1.get_producers() returns the set of all the possible actions in the layer that have prop1 on their add list
     """
-    "*** YOUR CODE HERE ***"
+    for p1 in prop1.get_producers():
+        for p2 in prop2.get_producers():
+            if Pair(p1, p2) in mutex_actions_list:
+                return True
+    return False
