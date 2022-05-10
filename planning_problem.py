@@ -77,9 +77,8 @@ class PlanningProblem:
 
 
 
-
     @staticmethod
-    def get_cost_of_actions( actions):
+    def get_cost_of_actions(actions):
         return len(actions)
 
     def goal_state_not_in_prop_layer(self, propositions):
@@ -119,7 +118,7 @@ def max_level(state, planning_problem):
     pg_init.set_proposition_layer(prop_layer_init)   #update the new plan graph level with the the proposition layer
     """
     "*** YOUR CODE HERE ***"
-    prop_layer_init = PropositionLayer()
+    prop_layer_init = PropositionLayer()  #create a new proposition layer
     for prop in state:
         prop_layer_init.add_proposition(prop)
     pg_init = PlanGraphLevel()
